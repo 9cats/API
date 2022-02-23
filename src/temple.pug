@@ -1,0 +1,41 @@
+html
+  |
+  |
+  head
+    |
+    | 
+    title Index of /#{Key}
+    |
+    |
+    meta(charset="utf-8")
+    |
+    |
+  |
+  |
+  body
+    |
+    |
+    h1 Index of /#{Key}
+    |
+    |
+    hr
+    |
+    |
+    pre
+      |
+      |
+      a(href="../") ../
+      each file in child
+        |
+        |
+        a(href=file.relPath) #{file.relPath}
+        span #{file.showInfo}
+      |
+      |
+    |
+    |
+    hr
+    |
+    |
+  |
+  |
