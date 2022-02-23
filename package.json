@@ -1,11 +1,13 @@
 {
-  "name": "project",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "9cats_vercel_api",
+  "version": "0.0.1",
+  "description": "9cats 的自建 API",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "vercel-build": ""
   },
-  "author": "",
+  "devDependencies": {
+    "vercel": "^24.0.0"
+  },
+  "author": "9cats",
   "license": "ISC"
 }

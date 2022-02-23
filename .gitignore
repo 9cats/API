@@ -1,0 +1,7 @@
+# node.js
+package-lock.json
+node_modules
+
+# vercel deploy environment
+.env
+.vercel
