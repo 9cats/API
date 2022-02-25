@@ -99,14 +99,14 @@ export default async function handler(req, res) {
       if (IsDir(content)) {
         /* 补充内容 */
         content.child = [];
-        content.relPath = getFileName(content);
+        content.relPath = '/' + content.Key;
         content.relName = getFileName(content) + '/';
 
         /* 进入下一级 */
         current = content;
       } else {
         /* 补充内容 */
-        content.relPath = getFileName(content);
+        content.relPath = '/' + content.Key;
         content.relName = getFileName(content);
       }
 
