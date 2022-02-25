@@ -5,7 +5,9 @@ const fs = require("fs");
 const pug = require("pug");
 const path = require("path");
 const COS = require("cos-nodejs-sdk-v5");
-const {XMLParser} = require("fast-xml-parser");
+const {
+  XMLParser
+} = require("fast-xml-parser");
 
 const compiledFunction = pug.compileFile(path.resolve(process.cwd(), 'src/temple.pug'));
 const parser = new XMLParser();
@@ -49,7 +51,8 @@ export default async function handler(req, res) {
   let contents; //存放所有的文件及信息
   let tree = { //将contents转为树
     Key: "",
-    child: []
+    child: [],
+    pathLen: 0
   };
 
   /* 开始执行任务 */
@@ -76,34 +79,50 @@ export default async function handler(req, res) {
     for (let index in contents) {
       let content = contents[index];
       let path = content.Key.split('/');
-      /* 根目录文件 || 根目录文件夹 */
-      if ((path.length == 1) || (path.length == 2 && path[1] == '')) {
-        current = tree;
-      }
-      /* 文件夹 */
-      if (path[path.length - 1] == '') {
-        if (!Ignore.includes(path[path.length - 2])) {
-          current.child.push(content);
+
+      //判断文件之间的关系
+      content.pathLen = content.Key.split('/').length;
+      if (IsDir(content)) {
+        while (content.pathLen <= current.pathLen) {
+          current = current.parent;
         }
+      } else {
+        while (content.pathLen < current.pathLen) {
+          current = current.parent;
+        }
+      }
+
+      /* 建立联系 */
+      current.child.push(content);
+      content.parent = current;
+
+      if (IsDir(content)) {
+        /* 补充内容 */
         content.child = [];
-        content.relPath = path[path.length - 2];
-        content.relName = path[path.length - 2] + '/';
+        content.relPath = getFileName(content);
+        content.relName = getFileName(content) + '/';
+
+        /* 进入下一级 */
         current = content;
+      } else {
+        /* 补充内容 */
+        content.relPath = getFileName(content);
+        content.relName = getFileName(content);
       }
-      /* 文件 */
-      else {
-        if (!Ignore.includes(path[path.length - 1])) {
-          current.child.push(content);
-        }
-        content.relPath = path[path.length - 1];
-        content.relName = path[path.length - 1];
+
+      /* 判断是否隐藏 */
+      if (Ignore.includes(getFileName(content))) {
+        content.show = false;
+      } else {
+        content.show = true;
       }
+
       /* 处理额外的文件信息，用于显示 */
       let len = content.relName.length;
       if (len > 76) {
-        content.showInfo = content.LastModified.padStart(24, " ") + ("" + content.Size).padStart(25, " ");
+        content.showInfo = content.LastModified + ("" + content.Size).padStart(18, " ");
       } else {
-        content.showInfo = content.LastModified.padStart(100 - len, " ") + ("" + content.Size).padStart(25, " ");
+        content.showInfo = content.LastModified + ("" + content.Size).padStart(18, " ");
       }
     }
     console.log(`Process Bucket Infomation`);
@@ -165,6 +184,15 @@ function sortFile(content) {
 function IsDir(content) {
   let path = content.Key.split('/');
   return path[path.length - 1] == '';
+}
+
+function getFileName(content) {
+  let path = content.Key.split('/');
+  if (IsDir(content)) {
+    return path[path.length - 2];
+  } else {
+    return path[path.length - 1];
+  }
 }
 
 function getObject(params) {

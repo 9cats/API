@@ -10,6 +10,9 @@ html
     meta(charset="utf-8")
     |
     |
+    link(rel="stylesheet", href="/css/cos.css")
+    |
+    |
   |
   |
   body
@@ -19,21 +22,13 @@ html
     |
     |
     hr
-    |
-    |
     pre
-      |
-      |
-      a(href="../") ../
+      div
+        a(href="../") ../
       each file in child
-        |
-        |
-        a(href=file.relPath) #{file.relName}
-        span #{file.showInfo}
-      |
-      |
-    |
-    |
+        div(class="file" style=file.show?"display:flex":"display:none")
+          a(href=file.relPath) #{file.relName}
+          span #{file.showInfo}
     hr
     |
     |
