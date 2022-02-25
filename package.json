@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "9cats 的自建 API",
   "scripts": {
-    "vercel-build": ""
   },
   "devDependencies": {
     "vercel": "^24.0.0"
@@ -13,6 +12,6 @@
   "dependencies": {
     "cos-nodejs-sdk-v5": "^2.11.6",
     "fast-xml-parser": "^4.0.3",
-    "pug-cli": "^1.0.0-alpha6"
+    "pug": "^3.0.2"
   }
 }

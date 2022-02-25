@@ -5,9 +5,7 @@ const fs = require("fs");
 const pug = require("pug");
 const path = require("path");
 const COS = require("cos-nodejs-sdk-v5");
-const {
-  XMLParser
-} = require("fast-xml-parser");
+const {XMLParser} = require("fast-xml-parser");
 
 const compiledFunction = pug.compileFile(path.resolve(process.cwd(), 'src/temple.pug'));
 const parser = new XMLParser();
