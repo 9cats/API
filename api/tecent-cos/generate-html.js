@@ -12,28 +12,37 @@ const {
 const compiledFunction = pug.compileFile(path.resolve(process.cwd(), 'src/temple.pug'));
 const parser = new XMLParser();
 
-/* 以下是环境变量 */
-var cos = new COS({
-  SecretId: process.env.SecretId,
-  SecretKey: process.env.SecretKey,
-});
+//全局变量
+var cos;
 
 /* 以上是环境变量 */
 
 export default async function handler(req, res) {
   /* 获取参数 */
   let {
-    Region = "Region",
+    SecretId = "SecretId",
+      SecretKey = "SecretKey",
+      Region = "Region",
       Bucket = "Bucket",
       Ignore = "Ignore"
   } = req.body;
+  /* 使用 SecretId 和 SecretKey 登陆腾讯云 */
+  try {
+    cos = new COS({
+      SecretId: SecretId,
+      SecretKey: SecretKey,
+    });
+  } catch (e) {
+    return res.send(Fail(`Error login in tecnet cloud.`, e));
+  }
+
+
   /* 转数组 */
   if (Ignore && Ignore != "") {
     try {
       Ignore = eval(Ignore);
     } catch (e) {
-      console.log(`Error get params of ignore. Error message:`, e)
-      return res.send("Fail");
+      return res.send(Fail(`Error get params of ignore.`, e));
     }
   }
 
@@ -58,8 +67,7 @@ export default async function handler(req, res) {
     data = res.Body;
     console.log('Get bucket catalog: ', Bucket);
   } catch (e) {
-    console.log(`Error get bucket catalog. Error message:`, e)
-    return res.send("Fail");
+    return res.send(Fail(`Error get bucket catalog.`, e));
   }
 
   /* 从上步获得的数据中取出变量 */
@@ -102,8 +110,7 @@ export default async function handler(req, res) {
     }
     console.log(`Process Bucket Infomation`);
   } catch (e) {
-    console.log(`Error process bucket catalog. Error message:`, e);
-    return res.send("Fail");
+    return res.send(Fail(`Error process bucket catalog.`, e));
   }
 
   /* 排序 */
@@ -132,12 +139,11 @@ export default async function handler(req, res) {
     await Promise.all(promiseArr);
     console.log(`Generate and put files successfully`);
   } catch (e) {
-    console.log(`Error generate or put. Error message:`, e);
-    return res.send("Fail");
+    return res.send(Fail(`Error generate or put.`, e));
   }
 
   /* 响应 */
-  return res.send("Success");
+  return res.send(Success("Mission completed"));
 }
 
 
@@ -185,4 +191,22 @@ function putObject(params) {
       }
     })
   })
+}
+
+
+
+function Success(msg) {
+  return {
+    success: true,
+    message: msg
+  }
+}
+
+function Fail(msg, e) {
+  console.log(msg, e);
+  return {
+    success: false,
+    message: msg,
+    error: e
+  }
 }
