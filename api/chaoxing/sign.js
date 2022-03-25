@@ -2,12 +2,8 @@ const chaoxing = require("../../chaoxing/dist/chaoxing")
 
 export default async function handler(req, res) {
   /*--- 获取账号密码 ----*/
-  let {
-    account = "account",
-    password = "password"
-  } = req.body;
-  // let account = req.body["account"];
-  // let password = req.body["password"];
+  let account = req.body["account"];
+  let password = req.body["password"];
 
   /* 检测是否获取到账号密码 */
   if (!(account && password)) {
