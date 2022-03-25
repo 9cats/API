@@ -2,8 +2,17 @@ const chaoxing = require("../../chaoxing/dist/chaoxing")
 
 export default async function handler(req, res) {
   /*--- 获取账号密码 ----*/
-  let account = req.body["account"];
-  let password = req.body["password"];
+  let account;
+  let password;
+  try {
+    account = req.body["account"];
+    password = req.body["password"];
+  } catch (e) {
+    return res.send({
+      msg: "登陆失败，请输入账号密码",
+      success: false
+    })
+  }
 
   /* 检测是否获取到账号密码 */
   if (!(account && password)) {
@@ -24,7 +33,7 @@ export default async function handler(req, res) {
     })
   }
 
-	/* 签到 */
+  /* 签到 */
   let signResult = await me.sign();
 
   res.send(signResult);

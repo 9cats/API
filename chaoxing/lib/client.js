@@ -29,10 +29,10 @@ class ChaoXing {
 
         /* 判断登陆是否正确 */
         if (info.status == true) {
-          console.log(`${getCurTime()}:${this.account}: 登陆成功`)
+          console.log(`${getCurTime()}|${this.account}: 登陆成功`)
           return info;
         } else {
-          console.log(`${getCurTime()}:${this.account}: 登陆失败，密码错误`)
+          console.log(`${getCurTime()}|${this.account}: 登陆失败，密码错误`)
           return info;
         }
       })
@@ -62,9 +62,9 @@ class ChaoXing {
       .query({id: info.id})
       .then(res => {
         if (res.body.success) {
-          console.log(`${getCurTime()}:${this.account}: 成功签到`);
+          console.log(`${getCurTime()}|${this.account}: 成功签到`);
         } else {
-          console.log(`${getCurTime()}:${this.account}: 签到失败`);
+          console.log(`${getCurTime()}|${this.account}: 签到失败`);
         }
         return res.body;
       })

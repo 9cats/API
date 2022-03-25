@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <meta name="viewport"
+    content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width" />
+  <link rel="stylesheet" href="/chaoxing/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+  <title>图书馆签到</title>
+</head>
+
+<body>
+
+  <section>
+    <div class="color"></div>
+    <div class="color"></div>
+    <div class="color"></div>
+    <div class="box">
+      <div class="square" style="--i:0"></div>
+      <div class="square" style="--i:1"></div>
+      <div class="square" style="--i:2"></div>
+      <div class="square" style="--i:3"></div>
+      <div class="square" style="--i:4"></div>
+      <div class="container">
+        <div class="form">
+          <h2>图书馆座位签到</h2>
+          <div>
+            <div class="inputBox">
+              <input id="account" type="text" placeholder="手机号">
+            </div>
+            <div class="inputBox">
+              <input id="password" type="password" placeholder="密码" />
+            </div>
+            <div class="inputBox">
+              <input id="submit" type="submit" value="签到" />
+            </div>
+            <p class="forget">使用：输入学习通账号和密码并签到</p>
+            <p class="forget">注意：账号只能用手机号</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+<script>
+$("#submit").click(function(){
+  var account = $("#account").val();
+  var password = $("#password").val();
+  if(account == '' || password == ''){
+    alert("请输入账号和密码");
+    return false;
+  }
+  $.ajax({
+    url: 'https://api.9cats.link/api/chaoxing/sign',
+    // url: 'http://localhost:3000/api/chaoxing/sign',
+    type: 'POST',
+    data: {
+      account: account,
+      password: password
+    },
+    success: function(data){
+      if(data.success){
+        alert(`签到成功:${data.msg}`);
+      }else{
+        alert(`签到失败:${data.msg}`);
+      }
+    }
+  });
+});
+
+</script>
+</html>
