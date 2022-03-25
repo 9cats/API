@@ -12,6 +12,7 @@
     "cos-nodejs-sdk-v5": "^2.11.6",
     "fast-xml-parser": "^4.0.3",
     "pug": "^3.0.2",
+    "superagent": "^7.1.1",
     "tencentcloud-sdk-nodejs": "^4.0.296"
   }
 }
