@@ -55,7 +55,7 @@ class Sporter {
   /* 获得几天后的日期 */
   getDay(dayNum) {
     let time_server = new Date(); //server 时间
-    let time = new Date(time_server.getTime() + eval(dayNum) * 24 * 60 * 60 * 1000); //北京时间
+    let time = new Date(time_server.getTime() + (eval(dayNum) + 8) * 24 * 60 * 60 * 1000); //北京时间
 
     let year = time.getFullYear();
     let month = (time.getMonth() + 1).toString().padStart(2, "0"); //左边需要补0
