@@ -133,6 +133,7 @@ class Sporter {
   /* 自动抢后天的羽毛球 */
   async autoSubmit(txrsfrzh, yysjd1, yysjd2, yycdbh) {
     /* 等待下一天 */
+    /*
     for (;;) {
       let result = await this.agent
         .get("https://wfw.scuec.edu.cn/2021/08/29/book/partner")
@@ -144,6 +145,7 @@ class Sporter {
       if(result == true) break;
       else await Utils.delay(1000);
     }
+    */
 
     let result = [];
     result.push(await this.submit(txrsfrzh, yysjd1, yycdbh, this.getDay(2)));
