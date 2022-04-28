@@ -2,17 +2,20 @@
   "name": "9cats_vercel_api",
   "version": "0.0.2",
   "description": "9cats 的自建 API",
-  "scripts": {},
-  "devDependencies": {
-    "vercel": "^24.0.0"
+  "scripts": {
+    "server": "vercel dev"
   },
   "author": "9cats",
   "license": "ISC",
   "dependencies": {
     "cos-nodejs-sdk-v5": "^2.11.6",
+    "crypto-js": "^4.1.1",
     "fast-xml-parser": "^4.0.3",
     "pug": "^3.0.2",
     "superagent": "^7.1.1",
     "tencentcloud-sdk-nodejs": "^4.0.296"
+  },
+  "devDependencies": {
+    "vercel": "^24.0.0"
   }
 }
