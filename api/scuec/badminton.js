@@ -21,8 +21,9 @@ export default async function handler(req, res) {
 
   try {
     await sporter.login();
+    let result = 
     await sporter.autoSubmit(txrsfrzh, yysjd1, yysjd2, yycdbh);
-    res.send(Utils.Success("测试中，无错误"))
+    res.send(Utils.Success(result))
   } catch (e) {
     res.send(Utils.Fail("error", e))
   }
@@ -111,7 +112,7 @@ class Sporter {
           console.log(res.text);
         })
 
-      await this.agent
+      return await this.agent
         .post("https://wfw.scuec.edu.cn/2021/08/29/book/book")
         .set("Content-Type", "application/x-www-form-urlencoded")
         .send({
@@ -122,6 +123,7 @@ class Sporter {
         })
         .then(res => {
           console.log(res.text);
+          return(res.text);
         })
     } catch (e) {
       console.log(`${Date.parse(new Date())},${e}`);
@@ -143,7 +145,9 @@ class Sporter {
       else await Utils.delay(1000);
     }
 
-    await this.submit(txrsfrzh, yysjd1, yycdbh, this.getDay(2));
-    await this.submit(txrsfrzh, yysjd2, yycdbh, this.getDay(2));
+    let result = [];
+    result.push(await this.submit(txrsfrzh, yysjd1, yycdbh, this.getDay(2)));
+    result.push(await this.submit(txrsfrzh, yysjd2, yycdbh, this.getDay(2)));
+    return result;
   }
 }
